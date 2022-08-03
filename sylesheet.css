@@ -88,3 +88,16 @@ h2{
 		width:300px;
 	}
 }
+@media screen and (max-height: 900px){
+	img{
+		width:80px;
+		height:80px;
+	}
+	body{
+		font-size: smaller;
+	}
+	#bigData img{
+		height: 150px;
+		width:150px;
+	}
+}
