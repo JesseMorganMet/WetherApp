@@ -2,9 +2,151 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Title</title>
+	<title>WeatherApp</title>
+	<link rel="stylesheet" type="text/css" href="sylesheet.css" />
 </head>
-<body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+	$(document).ready(function(){
+		$("button").click(function(){
+			$.get("http://datapoint.metoffice.gov.uk/public/data/val/wxfcs/all/json/3840?res=3hourly&key=3e83b492-f4e4-44fe-b216-21874e51aee4", function(data, status){
+				alert("Data: " + data + "\nStatus: " + status);
+				console.log(data);
+				console.log(data.SiteRep.DV.Location.Period[1]);
+				const days = data.SiteRep.DV.Location.Period;
+				let elements = $("<table>");
+				let dayElements = $("<tr>");
+				let tempElements = $("<tr>");
+				let PpElements = $("<tr>")
 
+
+				//Data
+				for(let i =0;i<days.length;i++){
+					let tempAvg = 0;
+					let PpAvg = 0;
+
+					//Days
+					elements.append(dayElements);
+					const day = $("<th>").html(days[i].value);
+					dayElements.append(day); // Adding individual days
+					const dayData = days[i].Rep;
+					console.log(dayData);
+					//Days
+
+					//Temperature Average
+					elements.append(tempElements);
+					for(let j =0;j<dayData.length; j++){
+						let tempIndv;
+						parseInt(tempIndv = dayData[j].T);
+						console.log(tempIndv);
+						tempAvg = parseInt(tempAvg) + parseInt(tempIndv);
+					}
+					console.log("Average Temperature : " + tempAvg/dayData.length);
+					const temp = $("<th>").html((tempAvg/dayData.length).toFixed(2) + "C");
+					tempElements.append(temp); // Adding Average Temps
+					//Temperature Average
+
+					//Precipitation Average
+					elements.append(PpElements);
+					for(let j =0;j<dayData.length; j++){
+						let PpIndv;
+						parseInt(PpIndv = dayData[j].Pp);
+						console.log(PpIndv);
+						PpAvg = parseInt(PpAvg) + parseInt(PpIndv);
+					}
+					console.log("Average Precipitation : " + PpAvg/dayData.length);
+					const Percip = $("<th>").html((PpAvg/dayData.length).toFixed(2) + "%");
+					PpElements.append(Percip); // Adding Average Percip
+					//Precipitation Average
+
+				}
+				//Data
+				//TodayData
+				let weatherAvg = 0;
+				console.log(data.SiteRep.DV.Location.Period[0].Rep);
+				let today = data.SiteRep.DV.Location.Period[0].Rep;
+				const tempArr = [];
+				for(let j =0;j<today.length; j++) {
+					console.log(today[j].T);
+					tempArr.push(today[j].T);
+					console.log(tempArr);
+				}
+
+				let topElements = $("<table>");
+				let titles = $("<tr>");
+				let values = $("<tr>");
+				//let PpElements = $("<tr>")
+
+				//const temp = $("<th>").html(tempAvg/dayData.length + "C");
+				titles.append($("<th>").html("Highest Temp"));
+				titles.append($("<th>").html("Lowest Temp"));
+				titles.append($("<th>").html("UV"));
+
+
+				const place = data.SiteRep.DV.Location.name;
+				console.log(place);
+
+				let weather = today[0].W;
+				console.log("Weather Type : " + weather);
+
+				const maxTemp = Math.max(...tempArr);
+				console.log("Minimum Temperature: " + maxTemp);
+				values.append($("<th>").html(maxTemp + "C"));
+
+				const minTemp = Math.min(...tempArr);
+				console.log("Maximum Temperature: " + minTemp);
+				values.append($("<th>").html(minTemp + "C"));
+
+				const uv = today[0].U;
+				console.log("UV: " + uv);
+
+				if (uv<=2) {
+					console.log("Low")
+					values.append($("<th>").html("L"));
+				} else if(uv<=5){
+					console.log("Medium");
+					values.append($("<th>").html("M"));
+				} else if(uv<=7){
+					console.log("High");
+					values.append($("<th>").html("H"));
+				} else if(uv<=10){
+					console.log("Very Hight");
+					values.append($("<th>").html("VH"));
+				} else if(uv>=11){
+					console.log("Extreme");
+					values.append($("<th>").html("E"));
+				} else{
+					console.log("Something went wrong");
+				}
+
+
+
+				//values.append($("<th>").html(uv));
+
+				//TodayData
+
+				//Adding Data To HTML
+				$("#bigData").append($("<tr>").html(place));
+				$("#bigData").append($("<tr>").html(weather));
+				$("#bigData").append(titles);
+				$("#bigData").append(values);
+
+				$("#dataTable").append(PpElements);
+				$("#dataTable").append(tempElements);
+				$("#dataTable").append(dayElements);
+				//Adding Data To HTML
+
+			});
+		});
+	});
+
+</script>
+<body>
+<H1>Weather</H1>
+<button>REQUEST</button>
+<div id="bigData"></div>
+<div id="bottom">
+<div id="dataTable"></div>
+</div>
 </body>
 </html>

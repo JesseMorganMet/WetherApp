@@ -1,0 +1,40 @@
+.html{
+	color: black;
+}
+body{
+	background-image: linear-gradient(to bottom right, rgba(201, 96, 71, 0.73), rgba(157, 105, 227, 0.94));
+	height: 100vh;
+}
+
+#bottom{
+	display:flex;
+	align-self: flex-end;
+}
+
+#bigData{
+	color: azure;
+	font-size: 180%;
+	width:100%;
+	display:table;
+}
+#bigData > tr{
+
+	display: flex;
+	justify-content: center;
+}
+
+#dataTable{
+	color: azure;
+	font-size: 180%;
+	width:100%;
+	display:table;
+	bottom: 0;
+}
+
+tr{
+	width:100%;
+}
+
+th{
+	margin:1%;
+}
