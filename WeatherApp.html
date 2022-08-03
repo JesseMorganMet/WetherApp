@@ -8,16 +8,15 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
 	$(document).ready(function(){
-		$("button").click(function(){
-			$.get("http://datapoint.metoffice.gov.uk/public/data/val/wxfcs/all/json/3840?res=3hourly&key=3e83b492-f4e4-44fe-b216-21874e51aee4", function(data, status){
-				alert("Data: " + data + "\nStatus: " + status);
+		$('body').ready(function(){
+			$.get("http://datapoint.metoffice.gov.uk/public/data/val/wxfcs/all/json/310069?res=3hourly&key=3e83b492-f4e4-44fe-b216-21874e51aee4", function(data, status){
 				console.log(data);
-				console.log(data.SiteRep.DV.Location.Period[1]);
 				const days = data.SiteRep.DV.Location.Period;
 				let elements = $("<table>");
 				let dayElements = $("<tr>");
 				let tempElements = $("<tr>");
-				let PpElements = $("<tr>")
+				let PpElements = $("<tr>");
+				let wtElements = $("<tr>");
 
 
 				//Data
@@ -27,7 +26,29 @@
 
 					//Days
 					elements.append(dayElements);
-					const day = $("<th>").html(days[i].value);
+					let day1 = days[i].value;
+					day1 = day1.substring(0, day1.length - 1);
+					console.log(day1);
+
+					//converting data into a named day
+					let monthArr = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+					let dayD = day1.substr(8);
+					let month = day1.substr(5,6);
+					month = month.substring(0, month.length - 3);
+					let year = day1.substr(0,4);
+					month = monthArr[(parseInt(month)-1)]
+					console.log(dayD);
+					console.log(month);
+					console.log(year);
+					const dateStr = (month + " " + dayD + ", " + year);
+					const d = new Date(dateStr);
+					const weekday = ["Sun","Mon","Tues","Wed","Thur","Fri","Sat"];
+					const weekdayOut = weekday[d.getDay()];
+					console.log(weekdayOut);
+
+					//converting data into a named day
+
+					const day = $("<th>").html(weekdayOut);
 					dayElements.append(day); // Adding individual days
 					const dayData = days[i].Rep;
 					console.log(dayData);
@@ -59,10 +80,45 @@
 					PpElements.append(Percip); // Adding Average Percip
 					//Precipitation Average
 
+					//Weather Type p/day
+
+					elements.append(wtElements);
+					let weatherDaily = dayData[0].W;
+					console.log("The weather type is: " + weatherDaily);
+					let wD = $("<th>").html(weatherDaily);
+
+
+					weatherDaily = parseInt(weatherDaily);
+
+					if (weatherDaily==1|| weatherDaily==0) {
+						console.log("0/1")
+						wD = $("<th>").prepend("<img src='./icons/Sun.png'/>");
+					} else if(weatherDaily===2||weatherDaily===3||weatherDaily===7||weatherDaily===8){
+						console.log("2/3/7/8");
+						wD = $("<th>").prepend("<img src='./icons/Cloud.png'/>");
+					} else if(weatherDaily>4&&weatherDaily<6){
+						console.log("4-6");
+						wD = $("<th>").prepend("<img src='./icons/Fog.png'/>");
+					} else if(weatherDaily>9&&weatherDaily<15){
+						console.log("9-15");
+						wD = $("<th>").prepend("<img src='./icons/Rain.png'/>");
+					} else if(weatherDaily>16&&weatherDaily<27){
+						console.log("16-27");
+						wD = $("<th>").prepend("<img src='./icons/Snow.png'/>");
+					} else if(weatherDaily>28&&weatherDaily<30){
+						console.log("28-30");
+						wD = $("<th>").prepend("<img src='./icons/Thunder.png'/>");
+					} else{
+						console.log("Something went wrong");
+						console.log(weatherDaily);
+					}
+					wtElements.append(wD);
+					//Weather Type p/day
+
+
 				}
 				//Data
 				//TodayData
-				let weatherAvg = 0;
 				console.log(data.SiteRep.DV.Location.Period[0].Rep);
 				let today = data.SiteRep.DV.Location.Period[0].Rep;
 				const tempArr = [];
@@ -72,12 +128,9 @@
 					console.log(tempArr);
 				}
 
-				let topElements = $("<table>");
 				let titles = $("<tr>");
 				let values = $("<tr>");
-				//let PpElements = $("<tr>")
 
-				//const temp = $("<th>").html(tempAvg/dayData.length + "C");
 				titles.append($("<th>").html("Highest Temp"));
 				titles.append($("<th>").html("Lowest Temp"));
 				titles.append($("<th>").html("UV"));
@@ -86,9 +139,45 @@
 				const place = data.SiteRep.DV.Location.name;
 				console.log(place);
 
+
+
+				//Weather type
 				let weather = today[0].W;
 				console.log("Weather Type : " + weather);
+				const weatherType = ["Clear night","Sunny day","Partly cloudy (night)","Partly cloudy (day)","Not used","Mist","Fog","Cloudy","Overcast",
+					"Light rain shower (night)","Light rain shower (day)","Drizzle","Light rain","Heavy rain shower (night)","Heavy rain shower (day)",
+				"Heavy rain","Sleet shower (night)","Sleet shower (day)","Sleet","Hail shower (night)","Hail shower (day)","Hail","Light snow shower (night)",
+				"Light snow shower (day)","Light snow","Heavy snow shower (night)","Heavy snow shower (day)","Heavy snow","Thunder shower (night)","Thunder shower (day)","Thunder"
+				];
+				console.log(weatherType[weather]);
+				//Weather type
 
+				//Weather images
+
+				weather = parseInt(weather);
+				let wImg;
+				if (weather==1|| weather==0) {
+					console.log("0/1")
+					wImg = $("<img src='./icons/Sun.png'/>");
+				} else if(weather===2||weather===3||weather===7||weather===8){
+					console.log("2/3/7/8");
+					wImg = $("<img src='./icons/Cloud.png'/>");
+				} else if(weather>4&&weather<6){
+					console.log("4-6");
+					wImg = $("<img src='./icons/Fog.png'/>");
+				} else if(weather>9&&weather<15){
+					console.log("9-15");
+					wImg = $("<img src='./icons/Rain.png'/>");
+				} else if(weather>16&&weather<27){
+					console.log("16-27");
+					wImg = $("<img src='./icons/Snow.png'/>");
+				} else if(weather>28&&weather<30){
+					console.log("28-30");
+					wImg = $("<img src='./icons/Thunder.png'/>");
+				} else{
+					console.log("Something went wrong");
+				}
+				//Weather images
 				const maxTemp = Math.max(...tempArr);
 				console.log("Minimum Temperature: " + maxTemp);
 				values.append($("<th>").html(maxTemp + "C"));
@@ -110,7 +199,7 @@
 					console.log("High");
 					values.append($("<th>").html("H"));
 				} else if(uv<=10){
-					console.log("Very Hight");
+					console.log("Very Height");
 					values.append($("<th>").html("VH"));
 				} else if(uv>=11){
 					console.log("Extreme");
@@ -118,19 +207,16 @@
 				} else{
 					console.log("Something went wrong");
 				}
-
-
-
-				//values.append($("<th>").html(uv));
-
 				//TodayData
 
 				//Adding Data To HTML
-				$("#bigData").append($("<tr>").html(place));
-				$("#bigData").append($("<tr>").html(weather));
+				$("#bigData").append($("<h2>").html(place));
+				$("#bigData").append($("<tr>").prepend(wImg));//Weather image
+				$("#bigData").append($("<h2>").html(weatherType[weather]));
 				$("#bigData").append(titles);
 				$("#bigData").append(values);
 
+				$("#dataTable").append(wtElements);
 				$("#dataTable").append(PpElements);
 				$("#dataTable").append(tempElements);
 				$("#dataTable").append(dayElements);
@@ -142,8 +228,6 @@
 
 </script>
 <body>
-<H1>Weather</H1>
-<button>REQUEST</button>
 <div id="bigData"></div>
 <div id="bottom">
 <div id="dataTable"></div>
