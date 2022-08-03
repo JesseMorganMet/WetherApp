@@ -18,7 +18,6 @@
 				let PpElements = $("<tr>");
 				let wtElements = $("<tr>");
 
-
 				//Data
 				for(let i =0;i<days.length;i++){
 					let tempAvg = 0;
@@ -45,7 +44,6 @@
 					const weekday = ["Sun","Mon","Tues","Wed","Thur","Fri","Sat"];
 					const weekdayOut = weekday[d.getDay()];
 					console.log(weekdayOut);
-
 					//converting data into a named day
 
 					const day = $("<th>").html(weekdayOut);
@@ -77,45 +75,41 @@
 					}
 					console.log("Average Precipitation : " + PpAvg/dayData.length);
 					const Percip = $("<th>").html((PpAvg/dayData.length).toFixed(2) + "%");
-					PpElements.append(Percip); // Adding Average Percip
+					PpElements.append(Percip);
 					//Precipitation Average
 
 					//Weather Type p/day
-
 					elements.append(wtElements);
 					let weatherDaily = dayData[0].W;
 					console.log("The weather type is: " + weatherDaily);
 					let wD = $("<th>").html(weatherDaily);
 
-
 					weatherDaily = parseInt(weatherDaily);
 
-					if (weatherDaily==1|| weatherDaily==0) {
+					if (weatherDaily===1|| weatherDaily===0) {
 						console.log("0/1")
-						wD = $("<th>").prepend("<img src='./icons/Sun.png'/>");
+						wD = $("<th>").prepend("<img src='./icons/Sun.png' alt='Sunny Icon'/>");
 					} else if(weatherDaily===2||weatherDaily===3||weatherDaily===7||weatherDaily===8){
 						console.log("2/3/7/8");
-						wD = $("<th>").prepend("<img src='./icons/Cloud.png'/>");
+						wD = $("<th>").prepend("<img src='./icons/Cloud.png' alt='Cloudy Icon'/>");
 					} else if(weatherDaily>4&&weatherDaily<6){
 						console.log("4-6");
-						wD = $("<th>").prepend("<img src='./icons/Fog.png'/>");
+						wD = $("<th>").prepend("<img src='./icons/Fog.png' alt='Foggy Icon'/>");
 					} else if(weatherDaily>9&&weatherDaily<15){
 						console.log("9-15");
-						wD = $("<th>").prepend("<img src='./icons/Rain.png'/>");
+						wD = $("<th>").prepend("<img src='./icons/Rain.png' alt='Raining Icon'/>");
 					} else if(weatherDaily>16&&weatherDaily<27){
 						console.log("16-27");
-						wD = $("<th>").prepend("<img src='./icons/Snow.png'/>");
+						wD = $("<th>").prepend("<img src='./icons/Snow.png' alt='Snowing Icon'/>");
 					} else if(weatherDaily>28&&weatherDaily<30){
 						console.log("28-30");
-						wD = $("<th>").prepend("<img src='./icons/Thunder.png'/>");
+						wD = $("<th>").prepend("<img src='./icons/Thunder.png' alt='Thunder Icon'/>");
 					} else{
 						console.log("Something went wrong");
 						console.log(weatherDaily);
 					}
 					wtElements.append(wD);
 					//Weather Type p/day
-
-
 				}
 				//Data
 				//TodayData
@@ -135,11 +129,8 @@
 				titles.append($("<th>").html("Lowest Temp"));
 				titles.append($("<th>").html("UV"));
 
-
 				const place = data.SiteRep.DV.Location.name;
 				console.log(place);
-
-
 
 				//Weather type
 				let weather = today[0].W;
@@ -156,24 +147,24 @@
 
 				weather = parseInt(weather);
 				let wImg;
-				if (weather==1|| weather==0) {
+				if (weather===1|| weather===0) {
 					console.log("0/1")
-					wImg = $("<img src='./icons/Sun.png'/>");
+					wImg = $("<img src='./icons/Sun.png' alt='Sunnt Icon'/>");
 				} else if(weather===2||weather===3||weather===7||weather===8){
 					console.log("2/3/7/8");
-					wImg = $("<img src='./icons/Cloud.png'/>");
+					wImg = $("<img src='./icons/Cloud.png' alt='Cloudy Icon'/>");
 				} else if(weather>4&&weather<6){
 					console.log("4-6");
-					wImg = $("<img src='./icons/Fog.png'/>");
+					wImg = $("<img src='./icons/Fog.png' alt='Foggy Icon'/>");
 				} else if(weather>9&&weather<15){
 					console.log("9-15");
-					wImg = $("<img src='./icons/Rain.png'/>");
+					wImg = $("<img src='./icons/Rain.png' alt='Raining Icon'/>");
 				} else if(weather>16&&weather<27){
 					console.log("16-27");
-					wImg = $("<img src='./icons/Snow.png'/>");
+					wImg = $("<img src='./icons/Snow.png' alt='Snowing Icon'/>");
 				} else if(weather>28&&weather<30){
 					console.log("28-30");
-					wImg = $("<img src='./icons/Thunder.png'/>");
+					wImg = $("<img src='./icons/Thunder.png' alt='Thunder Icon'/>");
 				} else{
 					console.log("Something went wrong");
 				}
@@ -211,7 +202,7 @@
 
 				//Adding Data To HTML
 				$("#bigData").append($("<h2>").html(place));
-				$("#bigData").append($("<tr>").prepend(wImg));//Weather image
+				$("#bigData").append($("<div id='bigImg'>").prepend(wImg));//Weather image
 				$("#bigData").append($("<h2>").html(weatherType[weather]));
 				$("#bigData").append(titles);
 				$("#bigData").append(values);

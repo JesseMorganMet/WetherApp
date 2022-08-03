@@ -1,25 +1,20 @@
-.html{
-	color: black;
-}
 body{
-	font-family: "Times New Roman";
+	font-family: "Times New Roman", Times, serif;
 	font-weight: bold;
+	font-size:smaller;
 	background-image: linear-gradient(to bottom right, rgba(201, 96, 71, 0.73), rgba(157, 105, 227, 0.94));
 	height: 100vh;
+	color: azure;
 }
 
 #bottom{
 	position: fixed;
 	bottom:0;
 	margin-bottom: 2%;
-	transform: translate(-50%,-50%);
-	left:50%;
 }
 
 #bigData{
 	position: fixed;
-	margin-top:5%;
-	color: azure;
 	font-size: 180%;
 	width:100%;
 	display:table;
@@ -28,12 +23,20 @@ body{
 	display: flex;
 	justify-content: center;
 }
+#bigData th{
+	width:100%;
+}
 
 #dataTable{
-	color: azure;
 	font-size: 180%;
 	width:100%;
 	display:table;
+}
+
+#bigImg{
+	display: flex;
+	justify-content: center;
+	width:100%;
 }
 
 tr{
@@ -41,20 +44,47 @@ tr{
 }
 
 th{
+	width:100vh;
 	margin:1%;
-	min-width: 200px;
+}
+
+#bigData img{
+	height: 450px;
+	width:450px;
 }
 
 img{
-	height: 200px;
-	width:200px;
-}
-
-tr> img{
-	height: 500px;
-	width:500px;
+	height: 60px;
+	width:60px;
 }
 h2{
 	display: flex;
 	justify-content: center;
+	margin-bottom: 0;
+}
+@media screen and (min-width: 550px){
+	img{
+		width:100px;
+		height:100px;
+	}
+	body{
+		font-size: medium;
+	}
+	#bigData img{
+		height: 400px;
+		width:400px;
+	}
+}
+@media screen and (min-width: 800px){
+	img{
+		width:150px;
+		height:150px;
+	}
+	body{
+		font-size: larger;
+	}
+	#bigData img{
+		height: 300px;
+		width:300px;
+	}
 }
