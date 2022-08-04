@@ -181,20 +181,12 @@ $(document).ready(function(){
 					console.log(input);
 				}
 				return output;
-			};
+			}
 			//weatherimages function
 
 			//Adding Data To HTML
-			$("#bigData").append($("<h2>").html(place));
-			$("#bigData").append($("<div id='bigImg'>").prepend(wImg));//Weather image
-			$("#bigData").append($("<h2>").html(weatherType[weather]));
-			$("#bigData").append(titles);
-			$("#bigData").append(values);
-
-			$("#dataTable").append(wtElements);
-			$("#dataTable").append(PpElements);
-			$("#dataTable").append(tempElements);
-			$("#dataTable").append(dayElements);
+			$("#bigData").append($("<h2>").html(place)).append($("<div id='bigImg'>").prepend(wImg)).append($("<h2>").html(weatherType[weather])).append(titles).append(values);
+			$("#dataTable").append(wtElements).append(PpElements).append(tempElements).append(dayElements);
 			//Adding Data To HTML
 
 		})
