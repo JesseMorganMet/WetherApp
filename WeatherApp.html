@@ -6,223 +6,30 @@
 	<link rel="stylesheet" type="text/css" href="sylesheet.css" />
 </head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script>
-	$(document).ready(function(){
-		$('body').ready(function(){
-			$.get("http://datapoint.metoffice.gov.uk/public/data/val/wxfcs/all/json/310069?res=3hourly&key=3e83b492-f4e4-44fe-b216-21874e51aee4", function(data, status){
-				console.log(data);
-				const days = data.SiteRep.DV.Location.Period;
-				let elements = $("<table>");
-				let dayElements = $("<tr>");
-				let tempElements = $("<tr>");
-				let PpElements = $("<tr>");
-				let wtElements = $("<tr>");
-
-				//Data
-				for(let i =0;i<days.length;i++){
-					let tempAvg = 0;
-					let PpAvg = 0;
-
-					//Days
-					elements.append(dayElements);
-					let day1 = days[i].value;
-					day1 = day1.substring(0, day1.length - 1);
-					console.log(day1);
-
-					//converting data into a named day
-					let monthArr = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-					let dayD = day1.substr(8);
-					let month = day1.substr(5,6);
-					month = month.substring(0, month.length - 3);
-					let year = day1.substr(0,4);
-					month = monthArr[(parseInt(month)-1)]
-					console.log(dayD);
-					console.log(month);
-					console.log(year);
-					const dateStr = (month + " " + dayD + ", " + year);
-					const d = new Date(dateStr);
-					const weekday = ["Sun","Mon","Tues","Wed","Thur","Fri","Sat"];
-					const weekdayOut = weekday[d.getDay()];
-					console.log(weekdayOut);
-					//converting data into a named day
-
-					const day = $("<th>").html(weekdayOut);
-					dayElements.append(day); // Adding individual days
-					const dayData = days[i].Rep;
-					console.log(dayData);
-					//Days
-
-					//Temperature Average
-					elements.append(tempElements);
-					for(let j =0;j<dayData.length; j++){
-						let tempIndv;
-						parseInt(tempIndv = dayData[j].T);
-						console.log(tempIndv);
-						tempAvg = parseInt(tempAvg) + parseInt(tempIndv);
-					}
-					console.log("Average Temperature : " + tempAvg/dayData.length);
-					const temp = $("<th>").html((tempAvg/dayData.length).toFixed(2) + "C");
-					tempElements.append(temp); // Adding Average Temps
-					//Temperature Average
-
-					//Precipitation Average
-					elements.append(PpElements);
-					for(let j =0;j<dayData.length; j++){
-						let PpIndv;
-						parseInt(PpIndv = dayData[j].Pp);
-						console.log(PpIndv);
-						PpAvg = parseInt(PpAvg) + parseInt(PpIndv);
-					}
-					console.log("Average Precipitation : " + PpAvg/dayData.length);
-					const Percip = $("<th>").html((PpAvg/dayData.length).toFixed(2) + "%");
-					PpElements.append(Percip);
-					//Precipitation Average
-
-					//Weather Type p/day
-					elements.append(wtElements);
-					let weatherDaily = dayData[0].W;
-					console.log("The weather type is: " + weatherDaily);
-					let wD = $("<th>").html(weatherDaily);
-
-					weatherDaily = parseInt(weatherDaily);
-
-					if (weatherDaily===1|| weatherDaily===0) {
-						console.log("0/1")
-						wD = $("<th>").prepend("<img src='./icons/Sun.png' alt='Sunny Icon'/>");
-					} else if(weatherDaily===2||weatherDaily===3||weatherDaily===7||weatherDaily===8){
-						console.log("2/3/7/8");
-						wD = $("<th>").prepend("<img src='./icons/Cloud.png' alt='Cloudy Icon'/>");
-					} else if(weatherDaily>4&&weatherDaily<6){
-						console.log("4-6");
-						wD = $("<th>").prepend("<img src='./icons/Fog.png' alt='Foggy Icon'/>");
-					} else if(weatherDaily>9&&weatherDaily<15){
-						console.log("9-15");
-						wD = $("<th>").prepend("<img src='./icons/Rain.png' alt='Raining Icon'/>");
-					} else if(weatherDaily>16&&weatherDaily<27){
-						console.log("16-27");
-						wD = $("<th>").prepend("<img src='./icons/Snow.png' alt='Snowing Icon'/>");
-					} else if(weatherDaily>28&&weatherDaily<30){
-						console.log("28-30");
-						wD = $("<th>").prepend("<img src='./icons/Thunder.png' alt='Thunder Icon'/>");
-					} else{
-						console.log("Something went wrong");
-						console.log(weatherDaily);
-					}
-					wtElements.append(wD);
-					//Weather Type p/day
-				}
-				//Data
-				//TodayData
-				console.log(data.SiteRep.DV.Location.Period[0].Rep);
-				let today = data.SiteRep.DV.Location.Period[0].Rep;
-				const tempArr = [];
-				for(let j =0;j<today.length; j++) {
-					console.log(today[j].T);
-					tempArr.push(today[j].T);
-					console.log(tempArr);
-				}
-
-				let titles = $("<tr>");
-				let values = $("<tr>");
-
-				titles.append($("<th>").html("Highest Temp"));
-				titles.append($("<th>").html("Lowest Temp"));
-				titles.append($("<th>").html("UV"));
-
-				const place = data.SiteRep.DV.Location.name;
-				console.log(place);
-
-				//Weather type
-				let weather = today[0].W;
-				console.log("Weather Type : " + weather);
-				const weatherType = ["Clear night","Sunny day","Partly cloudy (night)","Partly cloudy (day)","Not used","Mist","Fog","Cloudy","Overcast",
-					"Light rain shower (night)","Light rain shower (day)","Drizzle","Light rain","Heavy rain shower (night)","Heavy rain shower (day)",
-				"Heavy rain","Sleet shower (night)","Sleet shower (day)","Sleet","Hail shower (night)","Hail shower (day)","Hail","Light snow shower (night)",
-				"Light snow shower (day)","Light snow","Heavy snow shower (night)","Heavy snow shower (day)","Heavy snow","Thunder shower (night)","Thunder shower (day)","Thunder"
-				];
-				console.log(weatherType[weather]);
-				//Weather type
-
-				//Weather images
-
-				weather = parseInt(weather);
-				let wImg;
-				if (weather===1|| weather===0) {
-					console.log("0/1")
-					wImg = $("<img src='./icons/Sun.png' alt='Sunnt Icon'/>");
-				} else if(weather===2||weather===3||weather===7||weather===8){
-					console.log("2/3/7/8");
-					wImg = $("<img src='./icons/Cloud.png' alt='Cloudy Icon'/>");
-				} else if(weather>4&&weather<6){
-					console.log("4-6");
-					wImg = $("<img src='./icons/Fog.png' alt='Foggy Icon'/>");
-				} else if(weather>9&&weather<15){
-					console.log("9-15");
-					wImg = $("<img src='./icons/Rain.png' alt='Raining Icon'/>");
-				} else if(weather>16&&weather<27){
-					console.log("16-27");
-					wImg = $("<img src='./icons/Snow.png' alt='Snowing Icon'/>");
-				} else if(weather>28&&weather<30){
-					console.log("28-30");
-					wImg = $("<img src='./icons/Thunder.png' alt='Thunder Icon'/>");
-				} else{
-					console.log("Something went wrong");
-				}
-				//Weather images
-				const maxTemp = Math.max(...tempArr);
-				console.log("Minimum Temperature: " + maxTemp);
-				values.append($("<th>").html(maxTemp + "C"));
-
-				const minTemp = Math.min(...tempArr);
-				console.log("Maximum Temperature: " + minTemp);
-				values.append($("<th>").html(minTemp + "C"));
-
-				const uv = today[0].U;
-				console.log("UV: " + uv);
-
-				if (uv<=2) {
-					console.log("Low")
-					values.append($("<th>").html("L"));
-				} else if(uv<=5){
-					console.log("Medium");
-					values.append($("<th>").html("M"));
-				} else if(uv<=7){
-					console.log("High");
-					values.append($("<th>").html("H"));
-				} else if(uv<=10){
-					console.log("Very Height");
-					values.append($("<th>").html("VH"));
-				} else if(uv>=11){
-					console.log("Extreme");
-					values.append($("<th>").html("E"));
-				} else{
-					console.log("Something went wrong");
-				}
-				//TodayData
-
-				//Adding Data To HTML
-				$("#bigData").append($("<h2>").html(place));
-				$("#bigData").append($("<div id='bigImg'>").prepend(wImg));//Weather image
-				$("#bigData").append($("<h2>").html(weatherType[weather]));
-				$("#bigData").append(titles);
-				$("#bigData").append(values);
-
-				$("#dataTable").append(wtElements);
-				$("#dataTable").append(PpElements);
-				$("#dataTable").append(tempElements);
-				$("#dataTable").append(dayElements);
-				//Adding Data To HTML
-
-			});
-		});
-	});
-
-</script>
+<script type="text/javascript" src="dataRetrieval.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<script type="text/javascript" src="autocomplete.js"></script>
 <body>
-<div id="bigData"></div>
-<div style="width:100%; height:200px !important;"></div>
-<div id="bottom">
-<div id="dataTable"></div>
+<button id="locationInput">Search</button><input type="text" placeholder="Enter Location" id="tags">
+
+<script>
+	var input = document.getElementById("tags");
+	input.addEventListener("keypress", function(event) {
+		if (event.key === "Enter") {
+			event.preventDefault();
+			document.getElementById("locationInput").click();
+		}
+	});
+</script>
+
+
+<div>
+	<div id="bigData"></div>
+	<div id="bottom">
+		<div id="dataTable"></div>
+	</div>
 </div>
+
 </body>
 </html>
