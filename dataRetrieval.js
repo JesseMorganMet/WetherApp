@@ -2,7 +2,8 @@ $(document).ready(function(){
 	$('button').click(function(){
 		let locationIdData;
 		let getRequest;
-		let input = tags.value
+		let input = tags.value;
+		start.innerHTML="";
 		bigData.innerHTML="";
 		dataTable.innerHTML="";
 		$.get("http://datapoint.metoffice.gov.uk/public/data/val/wxfcs/all/json/sitelist?res=3hourly&key=3e83b492-f4e4-44fe-b216-21874e51aee4", function(data, status) {
