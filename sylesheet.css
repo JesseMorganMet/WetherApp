@@ -5,6 +5,7 @@ body{
 	background-image: linear-gradient(to bottom right, rgba(201, 96, 71, 0.73), rgba(157, 105, 227, 0.94));
 	height: 100vh;
 	color: azure;
+	overflow: hidden;
 }
 
 #bottom{
@@ -86,9 +87,9 @@ ul {
 	display: flex;
 }
 
-/*#whitespace{*/
-/*	height: 20vh;*/
-/*}*/
+#whitespace{
+	height: 0vh;
+}
 
 @media screen and (min-width: 550px){
 	img{
@@ -128,4 +129,27 @@ ul {
 		height: 150px;
 		width:150px;
 	}
+}
+@media screen and (min-height: 1000px){
+	@media screen and (min-width: 500px){
+		#bottom{
+			position: absolute;
+			bottom: 0;
+			margin-bottom: 10%;
+			/*height: 30vh;*/
+		}
+		#whitespace img{
+			margin-top:10%;
+			visibility: visible !important;
+			width: 100%;
+		}
+		#search{
+			margin-top:10%;
+		}
+
+	}
+}
+
+#whitespace img{
+	visibility: hidden ;
 }
