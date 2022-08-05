@@ -8,17 +8,17 @@ body{
 }
 
 #bottom{
-	position: fixed;
-	bottom:0;
+	/*position: fixed;*/
+	/*bottom:0;*/
 	margin-bottom: 2%;
 }
 
 #bigData{
-	position: fixed;
+	/*position: fixed;*/
 	font-size: 180%;
 	width:100%;
 	display:table;
-	top: 0;
+	/*top: 0;*/
 }
 #bigData > tr{
 	display: flex;
@@ -77,8 +77,18 @@ ul {
 
 #search{
 	margin: 2%;
-	max-width:40%;
+	margin-bottom: 0%;
+	display:flex;
+	align-items:center;
+	flex-direction:column;
 }
+#start{
+	display: flex;
+}
+
+/*#whitespace{*/
+/*	height: 20vh;*/
+/*}*/
 
 @media screen and (min-width: 550px){
 	img{

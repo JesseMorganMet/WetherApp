@@ -13,9 +13,11 @@
 <body>
 
 <div id="search">
-<button id="locationInput">Search</button><input type="text" placeholder="Enter Location" id="tags"/>
+	<div><button id="locationInput">Search</button><input type="text" placeholder="Enter Location" id="tags"/></div>
+	<div id="start"><h1>Please Enter A Location</h1></div>
 </div>
 
+<!--press enter rather than the button script-->
 <script>
 	let input = document.getElementById("tags");
 	input.addEventListener("keypress", function(event) {
@@ -28,7 +30,7 @@
 
 <div>
 	<div id="bigData"></div>
-	<div id="start"><h1>Please Enter A Location</h1></div>
+	<div id="whitespace"></div>
 	<div id="bottom">
 		<div id="dataTable"></div>
 	</div>

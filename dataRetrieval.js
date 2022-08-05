@@ -164,7 +164,6 @@ $(document).ready(function(){
 			//weatherimages function
 			function weatherImg(input){
 				input = parseInt(input);
-				//Could be a separate function since used multiple times
 				if (input===1|| input===0) {
 					output = $("<th>").prepend("<img src='./icons/Sun.png' alt='Sunny Icon'/>");
 				} else if(input===2||input===3||input===7||input===8){
@@ -189,7 +188,6 @@ $(document).ready(function(){
 			$("#bigData").append($("<h2>").html(place)).append($("<div id='bigImg'>").prepend(wImg)).append($("<h2>").html(weatherType[weather])).append(titles).append(values);
 			$("#dataTable").append(wtElements).append(PpElements).append(tempElements).append(dayElements);
 			//Adding Data To HTML
-
 		})
 			.fail(function() {
 				console.error("An error occurred while retrieving the data");
